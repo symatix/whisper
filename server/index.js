@@ -14,6 +14,18 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log('-> new client connected');
 
+    socket.emit('newMessage', {
+        from:'server',
+        text:'emitting message',
+        createdAt: Date.now()
+    })
+
+    socket.on('createMessage', (msg) => {
+        msg.createdAt = Date.now();
+
+        console.log('-> [createMessage]\n', msg);
+    })
+
     socket.on('disconnect', () => {
         console.log('-> client disconnected');
       });
