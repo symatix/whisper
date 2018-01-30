@@ -3,14 +3,32 @@
     <head>
         <meta charset="utf-8">
         <style>
-                body {background-color: darkslategrey;}
+            body {background-color: darkslategrey; color: lightgrey;}
             p    {color: lightgrey;}
         </style>
     </head>
     <body>
         <p>Welcome to Whisper</p>
+        <div>
+            <ol id="messages">
+            </ol>
+        </div>
+        
+        <div>
+            <form id="form-chat">
+                <label>From:</label>
+                <input type="text" name="from" id="form-from" />
+                <br />
+                <label>Text:</label>
+                <textarea rows="4" name="text" id="form-text"></textarea>
+                <br/>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+        
 
         <script src='/socket.io/socket.io.js'></script>
+        <script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
         <script src='/js/index.js'></script>
     </body>
 </html>

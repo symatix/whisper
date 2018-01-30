@@ -3,6 +3,8 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
+const { generateMessage } = require('./utils/message');
+
 const publicPath = path.join(__dirname, '../public');
 
 var app = express();
@@ -14,17 +16,13 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log('-> new client connected');
 
-    socket.emit('newMessage', {
-        from:'server',
-        text:'emitting message',
-        createdAt: Date.now()
-    })
+    // when user joins
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to Whisper'));
+    socket.broadcast.emit('newMessage',generateMessage('Admin', 'New user joined'))
 
-    socket.on('createMessage', (msg) => {
-        msg.createdAt = Date.now();
-
-        console.log('-> [createMessage]\n', msg);
-        io.emit('newMessage', msg);
+    socket.on('createMessage', (msg, callback) => {
+        io.emit('newMessage', generateMessage(msg.from, msg.text));
+        callback('data sent');
     })
 
     socket.on('disconnect', () => {
